@@ -2,7 +2,7 @@ import os
 import json
 import logging
 from concurrent.futures import ThreadPoolExecutor
-from confluent_kafka import Consumer, KafkaException, KafkaError
+from confluent_kafka import Consumer, KafkaError
 from dotenv import load_dotenv
 import multiprocessing
 import time
