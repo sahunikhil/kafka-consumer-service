@@ -1,0 +1,13 @@
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+
+bin/kafka-server-start.sh config/server.properties
+
+
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic Scenario-Execute --from-beginning
+
+
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --create --topic Scenario-Execute --partitions 3 --replication-factor 1
+
+
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic Scenario-Execute

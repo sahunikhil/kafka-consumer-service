@@ -157,3 +157,61 @@ python-dotenv==1.0.1
 - Consider consumer group configuration
 - Monitor and adjust thread pool size based on performance metrics
 
+---
+---
+# Technical round 2
+
+# Kafka Weekly Aggregation Consumer
+
+## Overview
+Enhanced Kafka consumer service that aggregates hourly data into weekly summaries across different dimensions.
+
+## Features
+- Receives hourly data from Scenario-Execute topic
+- Aggregates data by Contact Type, Staff Type, and Call Center
+- Sends aggregated results to Scenario-Execute-Response topic
+- Optional Parquet serialization of weekly data
+
+## Installation
+```bash
+pip install -r requirements.txt
+```
+
+## Configuration
+Update `.env` with:
+```
+KAFKA_BOOTSTRAP_SERVERS=localhost:9092
+KAFKA_GROUP_ID=weekly-aggregator
+INPUT_KAFKA_TOPIC=Scenario-Execute
+OUTPUT_KAFKA_TOPIC=Scenario-Execute-Response
+```
+
+## Aggregation Rules
+- Volume: Sum
+- Abandons: Sum
+- Top Line Agents (FTE): Sum
+- Base AHT: Average
+- Handled Threshold: Sum
+- Service Level: Average
+- Acceptable Wait Time: Average
+- Total Queue Time: Sum
+
+## Challenges Faced
+1. Data too big for topic, so compressing and encoding (base64) then sending to Kafka.
+2. Dynamic data aggregation across multiple dimensions
+3. Implementing flexible week start configuration
+
+## Testing
+1. Prepare test JSON payload
+2. Produce message to Scenario-Execute topic
+3. Verify aggregated message in Scenario-Execute-Response topic
+
+## Bonus Implementations
+- Dynamic week start day support
+- Parquet serialization of weekly data
+- Robust error handling
+
+## Performance Considerations
+- Uses pandas for efficient data manipulation
+- Concurrent message processing
+- Minimal memory overhead
